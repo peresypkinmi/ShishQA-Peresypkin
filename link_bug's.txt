@@ -1,7 +1,0 @@
-http://89.223.126.182:8080/projects/CALC/issues/CALC-1?filter=allopenissues
-http://89.223.126.182:8080/projects/CALC/issues/CALC-2?filter=allopenissues
-http://89.223.126.182:8080/projects/CALC/issues/CALC-3?filter=allopenissues
-http://89.223.126.182:8080/projects/CALC/issues/CALC-4?filter=allopenissues
-http://89.223.126.182:8080/projects/CALC/issues/CALC-5?filter=allopenissues
-http://89.223.126.182:8080/projects/CALC/issues/CALC-6?filter=allopenissues
-http://89.223.126.182:8080/projects/CALC/issues/CALC-7?filter=allopenissues
