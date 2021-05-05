@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "89110346-6481-44f5-be0e-b35993655890",
+		"name": "jira test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createmeta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test ( \"Set environment's\", function(){const responsejson=pm.response.json();\r",
+							"pm.environment.set(\"project_key\",responsejson.projects[1].key);\r",
+							"  pm.environment.set(\"issue_id\",responsejson.projects[1].issuetypes[0].id);});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var rnd = Math.random();\r",
+							"pm.environment.set(\"summary\",\"Peresypkin: AT_\" + rnd);\r",
+							"pm.environment.set(\"description\", \"Description: AT_\" + rnd);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://89.223.126.182:8080/rest/api/2/issue/createmeta",
+					"protocol": "http",
+					"host": [
+						"89",
+						"223",
+						"126",
+						"182"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"createmeta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "issue",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);})\r",
+							"\r",
+							"\r",
+							"pm.test ( \"Set environment\", function(){const responsejson=pm.response.json();\r",
+							"\r",
+							"  pm.environment.set(\"issue_id\",responsejson.id);});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"project\": {\r\n            \"key\": \"{{project_key}}\"\r\n        },\r\n        \"summary\": \"{{summary}}\" ,\r\n        \"description\": \"{{description}}\",\r\n        \"issuetype\": {\r\n            \"id\": \"{{issue_id}}\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://89.223.126.182:8080/rest/api/2/issue",
+					"protocol": "http",
+					"host": [
+						"89",
+						"223",
+						"126",
+						"182"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "issue2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check summary & description\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.fields.description).to.eql(pm.environment.get(\"description\"));\r",
+							"    pm.expect(responseJson.fields.summary).to.eql(pm.environment.get(\"summary\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://89.223.126.182:8080/rest/api/2/issue/{{issue_id}}",
+					"protocol": "http",
+					"host": [
+						"89",
+						"223",
+						"126",
+						"182"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "issue transit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test ( \"Set environment's\", function(){const responsejson=pm.response.json();\r",
+							"\r",
+							"  pm.environment.set(\"name\",responsejson.transitions[1].id\r",
+							");});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://89.223.126.182:8080/rest/api/2/issue/{{issue_id}}/transitions",
+					"protocol": "http",
+					"host": [
+						"89",
+						"223",
+						"126",
+						"182"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issue_id}}",
+						"transitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "name_issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"transition\": {\r\n        \"id\": \"{{name}}\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://89.223.126.182:8080/rest/api/2/issue/{{issue_id}}/transitions",
+					"protocol": "http",
+					"host": [
+						"89",
+						"223",
+						"126",
+						"182"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issue_id}}",
+						"transitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "issue_verify",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"issue_status\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.fields.status.name\r",
+							").to.eql(\"В работе\");})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://89.223.126.182:8080/rest/api/2/issue/{{issue_id}}",
+					"protocol": "http",
+					"host": [
+						"89",
+						"223",
+						"126",
+						"182"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "123456",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "peresypkinmi@gmail.ru",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
