@@ -1,12 +1,21 @@
 
 
 
+
+import java.io.File;
+
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import static org.junit.Assert.*;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -313,7 +322,24 @@ public class TestsDataValid {
         // driver.findElement(By.id("payment-status")).click();
 
         assertEquals("CONFIRMED", driver.findElement(By.xpath("//*[@id=\"payment-item-status\"]/div[2]")).getText());
+    }
 
+
+    @Test
+    public void test0003ConfirmedStatus() throws IOException {
+        driver.get(baseUrl);
+        System.out.println("good1");
+       // WebElement qwestion = driver.findElement(By.xpath("//*[@id=\"cvc-hint-toggle\"]"));
+        Actions builder = new Actions(driver);  //*[@id="cvc-hint-toggle"]
+        System.out.println("good2");
+        WebElement element = driver.findElement(By.xpath("//*[@id=\"cvc-hint-toggle\"]"));
+        System.out.println("good3");
+        builder.moveToElement(element).build().perform();
+        System.out.println("good4");
+        WebDriver augmentedDriver = new Augmenter().augment(driver);
+        File scrFile = ((TakesScreenshot)augmentedDriver).
+                getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File("c:\\Users\\Miiha\\Desktop\\screenshot.png"));
     }
     @After
     public void tearDown()  {
